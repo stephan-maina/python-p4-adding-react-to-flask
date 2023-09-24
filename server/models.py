@@ -1,16 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_serializer import SerializerMixin
+from app import db
 
-db = SQLAlchemy()
-
-class Message(db.Model, SerializerMixin):
-    __tablename__ = 'messages'
-
+class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String)
-    username = db.Column(db.String)
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    done = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f'<Message by {self.username}: {self.body[:10]}...>'
+        return f'<Task: {self.title}>'
